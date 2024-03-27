@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -60,16 +63,28 @@ func main() {
 
 	// 4ncü örnek (Yeni Go versiyonunda Gorilla'nın routing mekanizması dahili paketlere eklenmiş sanırım.)
 	// api/users/13 şeklinde test edilebilir
-	gorillaRouter := mux.NewRouter()
-	gorillaRouter.HandleFunc("/api/users/{id:[0-9]+}", TinyMuxHandler)
-	http.Handle("/", gorillaRouter)
+	// gorillaRouter := mux.NewRouter()
+	// gorillaRouter.HandleFunc("/api/users/{id:[0-9]+}", TinyMuxHandler)
+	// http.Handle("/", gorillaRouter)
 
+	// 5nci örnek
+	// http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/", layoutHandler)
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Web Server is listening...")
+}
+
+type Page struct {
+	Title           string
+	Author          string
+	Header          string
+	PageDescription string
+	Content         string
+	Url             string
 }
 
 type Robot struct {
@@ -111,4 +126,39 @@ func TinyMuxHandler(w http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 	fmt.Fprint(w, string(output))
+}
+
+func loadFile(fileName string) (string, error) {
+	bytes, err := os.ReadFile(fileName)
+	if err != nil {
+		return "", err
+	}
+	return string(bytes), nil
+}
+
+func indexHandler(w http.ResponseWriter, req *http.Request) {
+	body, _ := loadFile("index.html")
+	fmt.Fprint(w, body)
+
+}
+
+func layoutHandler(w http.ResponseWriter, req *http.Request) {
+	var builder bytes.Buffer
+	builder.WriteString("Learning GoLang - Level 201\n")
+	builder.WriteString("Topics: \n")
+	builder.WriteString("1- Db Operations\n")
+	builder.WriteString("2- File Operations\n")
+	builder.WriteString("3- Json Operations\n")
+	builder.WriteString("4- Web API Applications\n")
+	uri := "https://www.github.com/golang"
+	page := Page{
+		Title:           "GoLang 201 Training",
+		Author:          "John Dow",
+		Header:          "Advanced Level in GoLang 2024",
+		PageDescription: "Description of advanced level of Go",
+		Content:         builder.String(),
+		Url:             uri,
+	}
+	t, _ := template.ParseFiles("layout.html")
+	t.Execute(w, page)
 }
