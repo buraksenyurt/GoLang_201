@@ -22,7 +22,7 @@ touch helloworld.go
 go run .
 ```
 
-İlk örneğin kod içeriği de şöyleyi.
+İlk örneğin kod içeriği ise aşağıdaki gibi.
 
 ```go
 package main
@@ -33,3 +33,13 @@ func main() {
 	fmt.Println("Hello, World!")
 }
 ```
+
+## Konular
+
+Eğitim sırasında işlediğimiz konular,
+
+- Go Routine kavramı
+- Dosya IO İşlemleri
+- DB operasyonları
+- JSON serileştirme işlemleri
+- API geliştirme
