@@ -26,4 +26,30 @@ func main() {
 	// ch <- 3
 	fmt.Println(<-chn)
 	fmt.Println(<-chn)
+
+	chn2 := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		go DoSomething(i, chn2)
+	}
+
+	/*
+		Üstte 10 elemanlık buffer ile çalışacak bir channel söz konusu.
+		Ancak 11nci eleman deadlock'a neden olacaktır
+
+		fatal error: all goroutines are asleep - deadlock!
+
+		goroutine 1 [chan receive]:
+		main.main()
+				/workspaces/GoLang_201/Channeling/channeling.go:47 +0x1ae
+		exit status 2
+	*/
+	for i := 0; i < 11; i++ {
+		result := <-chn2
+		fmt.Println("End with ", result)
+	}
+}
+
+func DoSomething(i int, c chan int) {
+	fmt.Println("Running ", i)
+	c <- i * 2
 }
