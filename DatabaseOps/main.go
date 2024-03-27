@@ -2,6 +2,7 @@ package main
 
 import (
 	"example/databaseops/models"
+	"fmt"
 )
 
 func main() {
@@ -10,5 +11,17 @@ func main() {
 		Description: "A simple rust book",
 		Price:       34.50,
 	}
-	models.InsertProduct(product)
+	var id, title = models.InsertProduct(product)
+
+	fmt.Printf("Inserted row (%d) - %s\n", id, title)
+
+	product.Id = id
+	product.Title = "Sustainabile Software Engineering"
+	product.Description = "A really nice book"
+	product.Price = 59.99
+	models.UpdateProduct(product)
+
+	models.GetProducts()
+
+	models.GetProductById(id)
 }
