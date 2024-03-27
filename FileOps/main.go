@@ -7,12 +7,27 @@ import (
 )
 
 func main() {
-
-	// En hızlı haliyle dosya yazma (Fast Writing)
-	var err = os.WriteFile("data/products.txt", []byte("Product informations"), os.ModeAppend)
+	// Temp Klasör ve Dosya Oluşturma
+	path, err := os.MkdirTemp("", "temp")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	tempFile, err := os.CreateTemp(path, "data.tmp")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Temp file is created ", tempFile)
+
+	os.Remove(tempFile.Name())
+	os.Remove(path)
+
+	// En hızlı haliyle dosya yazma (Fast Writing)
+	err = os.WriteFile("data/products.txt", []byte("Product informations"), os.ModeAppend)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Dosya oluşturma ve içerisine basit bir metin yerleştirme
 	newFile, err := os.Create("Games.dat")
 	if err != nil {
@@ -44,7 +59,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Dosya açma ve ek yapma
+	// Dosya Açma ve Ek Yapma
 	file, err := os.OpenFile("data/games.dat", os.O_APPEND, os.ModeAppend)
 	if err != nil {
 		log.Fatal(err)
