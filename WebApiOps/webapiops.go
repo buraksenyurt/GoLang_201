@@ -25,17 +25,13 @@ func main() {
 	// İkinci örnek
 	// var iRobot Robot
 	// err := http.ListenAndServe(":9000", iRobot)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	// checkErr(err)
 
 	// Üçüncü örnek
 	// http.HandleFunc(apiRoot, func(w http.ResponseWriter, r *http.Request) {
 	// 	msg := RobotApi{"Robot Api Root"}
 	// 	output, err := json.Marshal(msg)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+	// 	checkErr(err)
 	// 	fmt.Fprint(w, string(output))
 	// })
 
@@ -46,18 +42,14 @@ func main() {
 	// 		{Nickname: "HAL - 2001", Region: "Black Hole Zone", Version: 99},
 	// 	}
 	// 	output, err := json.Marshal(robots)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+	// 	checkErr(err)
 	// 	fmt.Fprint(w, string(output))
 	// })
 
 	// http.HandleFunc(apiRoot+"/robots/me", func(w http.ResponseWriter, r *http.Request) {
 	// 	robot := Robot{"T-1000", "Unknown Zone", 13}
 	// 	output, err := json.Marshal(robot)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+	// 	checkErr(err)
 	// 	fmt.Fprint(w, string(output))
 	// })
 
@@ -71,9 +63,7 @@ func main() {
 	// http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/", layoutHandler)
 	err := http.ListenAndServe(":9000", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	checkErr(err)
 
 	fmt.Println("Web Server is listening...")
 }
@@ -122,9 +112,7 @@ func TinyMuxHandler(w http.ResponseWriter, req *http.Request) {
 	content := "User Id : " + id
 	message := RobotApi{content}
 	output, err := json.Marshal(message)
-	if err != nil {
-		log.Fatal(err)
-	}
+	checkErr(err)
 	fmt.Fprint(w, string(output))
 }
 
@@ -161,4 +149,10 @@ func layoutHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	t, _ := template.ParseFiles("layout.html")
 	t.Execute(w, page)
+}
+
+func checkErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }
