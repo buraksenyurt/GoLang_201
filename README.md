@@ -43,7 +43,13 @@ Eğitim sırasında işlediğimiz konular,
 - File I/O İşlemleri _(Dosya açma, okuma ve yazma işlemlerine değiniliyor)_
 - JSON serileştirme işlemleri _(Basit JSON serileştirme işlemleri yanında merkez bankasından döviz kurlarını çekme örneği yapıldı)_
 - API geliştirme _(Temel HTTP routing işlemleri ve gorilla mux kullanımına değinildi)_
-- Unit Test _(En basit anlamda birim test nasıl yazılır konusuna değinildi)_
+- Unit Test _(En basit anlamda birim test nasıl yazılır konusuna değinildi)_ Bu projede utility_test dışında weather klasöründe yer alan weather_service_test isimli ikinci bir birim test daha bulunuyor. Bir go projesindeki tüm testleri çalıştırmak için root klasördeyken aşağıdaki terminal komutu kullanılabilir.
+
+```bash
+# Projenin alt klasörlerindeki testler de dahil tüm testlerin çalıştırılması için
+# v=verbose anlamındadır.
+go test ./... -v
+```
 
 ## Yardımcı Bilgiler
 
